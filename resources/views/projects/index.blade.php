@@ -74,6 +74,12 @@
             margin-bottom: 24px;
         }
 
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         .btn {
             display: inline-block;
             padding: 10px 14px;
@@ -89,6 +95,7 @@
         .btn:hover { opacity: .85; }
         .btn-edit { background: #f0ad4e; color: #222; }
         .btn-delete { background: #dc3545; }
+        .btn-pdf { background: #dc3545; }
 
         .notice {
             background: #d1e7dd;
@@ -96,11 +103,6 @@
             padding: 12px 15px;
             border-radius: 6px;
             margin-bottom: 20px;
-        }
-
-        .error {
-            color: #dc3545;
-            font-size: 13px;
         }
 
         .projects {
@@ -204,6 +206,7 @@
 </head>
 
 <body>
+
 <nav class="navbar">
     <a href="{{ url('/') }}" class="brand">UNPAM - Prodi SI</a>
 
@@ -217,6 +220,7 @@
 </nav>
 
 <main class="container">
+
     <div class="page-heading">
         <h1>Portfolio Project</h1>
         <p>Dokumentasi project dan hasil karya pengembangan web.</p>
@@ -233,15 +237,30 @@
     @endif
 
     <div class="toolbar">
+
         <span>Total project: {{ $projects->count() }}</span>
-        <a href="{{ route('projects.create') }}" class="btn">
-            + Tambah Project
-        </a>
+
+        <div class="toolbar-actions">
+
+            <a href="{{ route('laporan.pdf') }}"
+               target="_blank"
+               class="btn btn-pdf">
+                Cetak PDF
+            </a>
+
+            <a href="{{ route('projects.create') }}" class="btn">
+                + Tambah Project
+            </a>
+
+        </div>
     </div>
 
     <div class="projects">
+
         @forelse ($projects as $project)
+
             <article class="card">
+
                 @if ($project->image)
                     <img
                         class="project-image"
@@ -249,14 +268,15 @@
                         alt="{{ $project->title }}"
                         onerror="this.style.display='none'"
                     >
-                    @else
-    <div class="project-image"
-         style="display:flex;align-items:center;justify-content:center;color:#777;">
-        Belum ada gambar
-    </div>
+                @else
+                    <div class="project-image"
+                         style="display:flex;align-items:center;justify-content:center;color:#777;">
+                        Belum ada gambar
+                    </div>
                 @endif
 
                 <div class="card-content">
+
                     <span class="status">{{ $project->status }}</span>
 
                     <h2>{{ $project->title }}</h2>
@@ -268,33 +288,48 @@
                     </div>
 
                     <div class="actions">
+
                         <a href="{{ route('projects.edit', $project) }}"
-                           class="btn btn-edit">Edit</a>
+                           class="btn btn-edit">
+                            Edit
+                        </a>
 
                         <form action="{{ route('projects.destroy', $project) }}"
                               method="POST"
                               onsubmit="return confirm('Yakin ingin menghapus project ini?')">
+
                             @csrf
                             @method('DELETE')
+
                             <button type="submit" class="btn btn-delete">
                                 Hapus
                             </button>
+
                         </form>
+
                     </div>
                 </div>
+
             </article>
+
         @empty
+
             <div class="empty">
                 <h3>Belum ada project</h3>
                 <p>Silakan tambahkan project pertama lu.</p>
+
                 <a href="{{ route('projects.create') }}" class="btn">
-                    Tambah Project
+                    + Tambah Project
                 </a>
             </div>
+
         @endforelse
+
     </div>
+
 </main>
 
 <footer>© 2026 Universitas Pamulang</footer>
+
 </body>
 </html>

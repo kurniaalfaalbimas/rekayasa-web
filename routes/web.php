@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\LaporanController;
 
 // Halaman Utama
 Route::get('/', function () {
@@ -37,3 +38,6 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
+
+Route::get('/laporan/pdf', [LaporanController::class, 'cetak'])
+    ->name('laporan.pdf');
